@@ -2,7 +2,7 @@ BLACK_EXCLUDES="/(\.venv|build)/"
 DOCKER_IMAGE?=opentutor-classifier-api
 DOCKER_IMAGE_ID=$(shell docker images -q ${DOCKER_IMAGE} 2> /dev/null)
 ROOT=$(shell dirname ${PWD})
-OPENTUTOR_CLASSIFIER_SRC=$(ROOT)/opentutor_classifier
+# OPENTUTOR_CLASSIFIER_SRC=$(ROOT)/opentutor_classifier
 VENV=.venv
 VENV_PIP=$(VENV)/bin/pip
 $(VENV):

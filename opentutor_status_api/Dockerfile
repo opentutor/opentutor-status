@@ -1,7 +1,7 @@
 FROM python:3.8-slim
 ENV STATUS_URL_FORCE_HTTPS=false
 WORKDIR /tmp/build
-COPY opentutor_classifier opentutor_classifier
+# COPY opentutor_classifier opentutor_classifier
 RUN pwd
 RUN ls -la /tmp/build
 ADD opentutor_status_api/requirements.txt opentutor_status_api/requirements.txt

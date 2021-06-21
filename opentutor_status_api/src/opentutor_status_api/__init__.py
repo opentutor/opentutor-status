@@ -8,7 +8,7 @@ from logging.config import dictConfig
 
 from flask import Flask
 from flask_cors import CORS
-from .config_default import Config
+# from .config_default import Config
 
 
 def create_app():
@@ -31,7 +31,7 @@ def create_app():
         }
     )
     app = Flask(__name__)
-    app.config.from_object(Config)
+    # app.config.from_object(Config)
     CORS(app)
 
     from opentutor_status_api.blueprints.healthcheck import healthcheck_blueprint
