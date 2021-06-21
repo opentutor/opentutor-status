@@ -8,7 +8,6 @@ import os
 import requests
 
 from flask import Blueprint, jsonify
-from opentutor_classifier.api import get_graphql_endpoint  # type: ignore
 
 healthcheck_blueprint = Blueprint("healthcheck", __name__)
 
