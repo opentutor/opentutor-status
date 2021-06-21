@@ -5,8 +5,8 @@ $(VENV):
 	$(MAKE) $(VENV)-update
 
 .PHONY: $(VENV)-update
-$(VENV)-update: virtualenv-installed
-	[ -d $(VENV) ] || virtualenv -p python3.8 $(VENV)
+$(VENV)-update:
+	[ -d $(VENV) ] || python3.8 -m venv $(VENV)
 	$(VENV)/bin/pip install --upgrade pip
 	$(VENV)/bin/pip install -r ./requirements.txt
 
@@ -30,25 +30,15 @@ LICENSE_HEADER:
 license: LICENSE LICENSE_HEADER $(VENV)
 	. $(VENV)/bin/activate \
 		&& python -m licenseheaders -t LICENSE_HEADER -d opentutor_status/src $(args) \
-		&& python -m licenseheaders -t LICENSE_HEADER -d opentutor_status/tests $(args) \
-		&& python -m licenseheaders -t LICENSE_HEADER -d tools $(args) \
-		&& python -m licenseheaders -t LICENSE_HEADER -d word2vec $(args)
+		&& python -m licenseheaders -t LICENSE_HEADER -d opentutor_status/tests $(args)
 
 .PHONY: test
 test:
 	cd opentutor_status && $(MAKE) test
 
-.PHONY: test-not-slow
-test-not-slow:
-	cd opentutor_status && $(MAKE) test-not-slow
-
 .PHONY: test-all
 test-all:
 	cd opentutor_status && $(MAKE) test-all
-
-.PHONY: test-all-not-slow
-test-all-not-slow:
-	cd opentutor_status && $(MAKE) test-all-not-slow
 
 .PHONY: test-format
 test-format: $(VENV)
@@ -67,9 +57,6 @@ test-types: $(VENV)
 	. $(VENV)/bin/activate \
 		&& mypy opentutor_status  \
 		&& mypy word2vec
-
-virtualenv-installed:
-	tools/virtualenv_ensure_installed.sh
 
 .PHONY: update-deps
 update-deps: $(VENV)
