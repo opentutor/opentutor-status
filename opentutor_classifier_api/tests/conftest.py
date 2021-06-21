@@ -18,11 +18,11 @@ def app():
     return myapp
 
 
-@pytest.fixture(scope="module", autouse=True)
-def word2vec() -> str:
-    word2vec_path = path.abspath(path.join("..", "word2vec", "word2vec.bin"))
-    if not path.exists(word2vec_path):
-        raise Exception(
-            "missing required word2vec.bin. Try run `make clean word2vec.bin` from <PROJECT_ROOT>/word2vec folder"
-        )
-    return word2vec_path
+# @pytest.fixture(scope="module", autouse=True)
+# def word2vec() -> str:
+#     word2vec_path = path.abspath(path.join("..", "word2vec", "word2vec.bin"))
+#     if not path.exists(word2vec_path):
+#         raise Exception(
+#             "missing required word2vec.bin. Try run `make clean word2vec.bin` from <PROJECT_ROOT>/word2vec folder"
+#         )
+#     return word2vec_path

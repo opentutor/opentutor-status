@@ -62,7 +62,7 @@ license:
 
 .PHONY: test
 test: $(VENV)
-	$(VENV)/bin/activate \
+	. $(VENV)/bin/activate \
 		&& export PYTHONPATH=$${PYTHONPATH}:$(PWD)/src \
 		&& coverage run \
 			--omit="$(PWD)/tests $(VENV)" \
