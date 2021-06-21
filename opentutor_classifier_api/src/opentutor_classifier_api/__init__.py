@@ -34,7 +34,7 @@ def create_app():
     app.config.from_object(Config)
     CORS(app)
 
-    from opentutor_classifier_api.blueprints.healthcheck import healthcheck_blueprint
+    from opentutor_status_api.blueprints.healthcheck import healthcheck_blueprint
 
     app.register_blueprint(healthcheck_blueprint, url_prefix="/classifier/healthcheck")
 

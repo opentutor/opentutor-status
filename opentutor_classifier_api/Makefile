@@ -41,7 +41,7 @@ build/opentutor_classifier:
 .PHONY docker-build:
 docker-build: clean
 	cd .. \
-		&& docker build -t $(DOCKER_IMAGE) -f ./opentutor_classifier_api/Dockerfile .
+		&& docker build -t $(DOCKER_IMAGE) -f ./opentutor_status_api/Dockerfile .
 
 
 .PHONY docker-build:

@@ -8,6 +8,6 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv(verbose=True, override=True, dotenv_path=os.path.join(os.getcwd(), ".env"))
-from opentutor_classifier_api import create_app  # noqa E402
+from opentutor_status_api import create_app  # noqa E402
 
 app = create_app()
