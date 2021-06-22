@@ -30,6 +30,14 @@ docker-run:
 		-p 5000:5000 \
 	$(DOCKER_IMAGE)
 
+.PHONY docker-build:
+docker-shell:
+	docker run \
+		-it \
+		--rm \
+		--entrypoint /bin/sh \
+	$(DOCKER_IMAGE)
+
 .PHONY: format
 format: $(VENV)
 	cd $(ROOT) && $(MAKE) format
