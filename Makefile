@@ -55,8 +55,7 @@ test-license: LICENSE LICENSE_HEADER
 .PHONY: test-types
 test-types: $(VENV)
 	. $(VENV)/bin/activate \
-		&& mypy opentutor_status  \
-		&& mypy word2vec
+		&& mypy opentutor_status
 
 .PHONY: update-deps
 update-deps: $(VENV)

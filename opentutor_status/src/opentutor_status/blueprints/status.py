@@ -24,10 +24,6 @@ GQL_QUERY_STATUS = """
 @status_blueprint.route("", methods=["GET"])
 @status_blueprint.route("/", methods=["GET"])
 def status():
-
-    import logging
-
-    logging.warning(f"INSIDE ROUTE")
     # Get service statuses
     # Admin
     res_admin = requests.head(os.getenv("HEALTHCHECK_ADMIN", "http://admin"))

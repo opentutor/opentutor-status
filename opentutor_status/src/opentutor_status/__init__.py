@@ -4,6 +4,7 @@
 #
 # The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 #
+import logging
 from logging.config import dictConfig
 
 from flask import Flask
@@ -29,11 +30,13 @@ def create_app():
             "root": {"level": "INFO", "handlers": ["wsgi"]},
         }
     )
-    app = Flask(__name__)
-    CORS(app)
+    try:
+        app = Flask(__name__)
+        CORS(app)
 
-    from .blueprints.status import status_blueprint
+        from .blueprints.status import status_blueprint
 
-    app.register_blueprint(status_blueprint, url_prefix="/status")
-
+        app.register_blueprint(status_blueprint, url_prefix="/status")
+    except Exception as x:
+        logging.exception(x)
     return app
