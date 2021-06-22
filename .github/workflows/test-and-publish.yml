@@ -19,7 +19,7 @@ jobs:
       - name: test licenses
         run: make test-license
       - name: test status api
-        run: cd opentutor_status_api && make test
+        run: cd opentutor_status && make test
   publish-check:
     name: publish check
     needs:
@@ -49,19 +49,15 @@ jobs:
           echo ::set-output name=image_tag::${IMAGE_TAG}
       - name: docker login
         run: docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
-      - name: docker build api
-        run: cd opentutor_status_api && DOCKER_IMAGE=uscictdocker/opentutor-classifier-api:${{ steps.tag.outputs.image_tag }} make docker-build
+      - name: docker build
+        run: cd opentutor_status && DOCKER_IMAGE=uscictdocker/opentutor-status:${{ steps.tag.outputs.image_tag }} make docker-build
       - name: docker tag release as version
         if: needs.publish-check.outputs.is_release == 'true'
         run: |
-          docker tag "uscictdocker/opentutor-classifier:${{ steps.tag.outputs.image_tag }}" "uscictdocker/opentutor-classifier:${GITHUB_REF#refs/tags/}"
-          docker tag "uscictdocker/opentutor-classifier-api:${{ steps.tag.outputs.image_tag }}" "uscictdocker/opentutor-classifier-api:${GITHUB_REF#refs/tags/}"
+          docker tag "uscictdocker/opentutor-status:${{ steps.tag.outputs.image_tag }}" "uscictdocker/opentutor-status:${GITHUB_REF#refs/tags/}"
       - name: docker tag main as latest
         if: github.ref == 'refs/heads/main'
         run: |
-          docker tag "uscictdocker/opentutor-classifier:${{ steps.tag.outputs.image_tag }}" "uscictdocker/opentutor-classifier:latest"
-          docker tag "uscictdocker/opentutor-classifier-api:${{ steps.tag.outputs.image_tag }}" "uscictdocker/opentutor-classifier-api:latest"
-      - name: docker push classifier
-        run: docker push --all-tags uscictdocker/opentutor-classifier
+          docker tag "uscictdocker/opentutor-status:${{ steps.tag.outputs.image_tag }}" "uscictdocker/opentutor-status:latest"
       - name: docker push api
-        run: docker push --all-tags uscictdocker/opentutor-classifier-api
+        run: docker push --all-tags uscictdocker/opentutor-status

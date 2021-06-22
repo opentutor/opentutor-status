@@ -9,7 +9,7 @@ import requests
 
 from flask import Blueprint, jsonify
 
-healthcheck_blueprint = Blueprint("healthcheck", __name__)
+status_blueprint = Blueprint("status", __name__)
 
 GQL_QUERY_STATUS = """
     query Healthcheck {
@@ -21,10 +21,9 @@ GQL_QUERY_STATUS = """
 """
 
 
-@healthcheck_blueprint.route("", methods=["GET"])
-@healthcheck_blueprint.route("/", methods=["GET"])
-def healthcheck():
-
+@status_blueprint.route("", methods=["GET"])
+@status_blueprint.route("/", methods=["GET"])
+def status():
     # Get service statuses
     # Admin
     res_admin = requests.head(os.getenv("HEALTHCHECK_ADMIN", "http://admin"))

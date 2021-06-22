@@ -5,14 +5,16 @@
 # The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 #
 from contextlib import contextmanager
-import responses
 import json
-from . import fixture_path
 import os
+
+import responses
+
+from . import fixture_path
 
 
 @contextmanager
-def _mock_healthchecks(
+def _mock_status(
     gql_fixture_name: str,
     gql_url="http://graphql/graphql",
     gql_status=200,
@@ -34,21 +36,20 @@ def _mock_healthchecks(
         rsps.add(responses.HEAD, admin_url, status=admin_status)
         rsps.add(responses.HEAD, home_url, status=home_status)
         rsps.add(responses.HEAD, tutor_url, status=tutor_status)
-        # responses.add(responses.GET, "http://training/ping", status=200)
         yield None
     finally:
         rsps.stop()
 
 
-def test_healthcheck_returns_all_statuses(client):
-    with _mock_healthchecks("admin_ok"):
-        res = client.get("/classifier/healthcheck/")
+def test_status_returns_all_statuses(client):
+    with _mock_status("admin_ok"):
+        res = client.get("/status/")
         assert len(res.json.get("services")) == 5
 
 
 def test_200_if_all_healthy(client):
-    with _mock_healthchecks("admin_ok"):
-        res = client.get("/classifier/healthcheck/")
+    with _mock_status("admin_ok"):
+        res = client.get("/status/")
         assert res.json["services"]["graphql"]["status"] == 200
         assert res.json["services"]["admin"]["status"] == 200
         assert res.json["services"]["home"]["status"] == 200
@@ -58,10 +59,10 @@ def test_200_if_all_healthy(client):
 
 
 def test_503_if_not_healthy(client):
-    with _mock_healthchecks(
+    with _mock_status(
         "admin_bad", gql_status=404, admin_status=400, home_status=500, tutor_status=502
     ):
-        res = client.get("/classifier/healthcheck/")
+        res = client.get("/status/")
         assert res.json["services"]["graphql"]["status"] == 404
         assert res.json["services"]["admin"]["status"] == 400
         assert res.json["services"]["home"]["status"] == 500
@@ -70,25 +71,25 @@ def test_503_if_not_healthy(client):
         assert res.status_code == 503
 
 
-def test_can_override_healthcheck_admin_url(client, monkeypatch) -> None:
-    with _mock_healthchecks("admin_ok", admin_url="http://someadmin", admin_status=418):
+def test_can_override_status_admin_url(client, monkeypatch) -> None:
+    with _mock_status("admin_ok", admin_url="http://someadmin", admin_status=418):
         monkeypatch.setenv("HEALTHCHECK_ADMIN", "http://someadmin")
-        res = client.get("/classifier/healthcheck/")
+        res = client.get("/status/")
         assert res.json["services"]["admin"]["status"] == 418
         assert res.status_code == 503
 
 
-def test_can_override_healthcheck_home_url(client, monkeypatch) -> None:
-    with _mock_healthchecks("admin_ok", home_url="http://somehome", home_status=418):
+def test_can_override_status_home_url(client, monkeypatch) -> None:
+    with _mock_status("admin_ok", home_url="http://somehome", home_status=418):
         monkeypatch.setenv("HEALTHCHECK_HOME", "http://somehome")
-        res = client.get("/classifier/healthcheck/")
+        res = client.get("/status/")
         assert res.json["services"]["home"]["status"] == 418
         assert res.status_code == 503
 
 
-def test_can_override_healthcheck_tutor_url(client, monkeypatch) -> None:
-    with _mock_healthchecks("admin_ok", tutor_url="http://sometutor", tutor_status=418):
+def test_can_override_status_tutor_url(client, monkeypatch) -> None:
+    with _mock_status("admin_ok", tutor_url="http://sometutor", tutor_status=418):
         monkeypatch.setenv("HEALTHCHECK_TUTOR", "http://sometutor")
-        res = client.get("/classifier/healthcheck/")
+        res = client.get("/status/")
         assert res.json["services"]["tutor"]["status"] == 418
         assert res.status_code == 503

@@ -5,9 +5,6 @@
 ##
 ## The full terms of this copyright and license should always be found in the root directory of this software deliverable as "license.txt" and if these terms are not found with this software, please contact the USC Stevens Center for the full license.
 ##
-export FLASK_APP=/app/opentutor_status_api
-cd /app && gunicorn -b 0.0.0.0:5000 manage:app
-# -h 0.0.0.0
-#   needs ip set or will be unreachable from host
-#   regardless of docker-run port mappings
+export FLASK_APP=/app/opentutor_status
+cd /app && gunicorn -b 0.0.0.0:5000 --log-level debug manage:app
 exit 0
