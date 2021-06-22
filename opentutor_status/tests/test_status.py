@@ -16,7 +16,7 @@ from . import fixture_path
 @contextmanager
 def _mock_status(
     gql_fixture_name: str,
-    gql_url="http://graphql/graphql",
+    gql_url="http://graphql:3001/graphql",
     gql_status=200,
     admin_url="http://admin",
     admin_status=200,

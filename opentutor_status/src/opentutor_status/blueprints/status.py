@@ -30,7 +30,7 @@ def status():
     admin_status = res_admin.status_code
 
     # GraphQL
-    endpoint = os.getenv("HEALTHCHECK_GRAPHQL", "http://graphql/graphql")
+    endpoint = os.getenv("HEALTHCHECK_GRAPHQL", "http://graphql:3001/graphql")
 
     res_gql = requests.post(endpoint, json={"query": GQL_QUERY_STATUS})
     graphql_status = res_gql.status_code
