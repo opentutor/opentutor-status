@@ -1,5 +1,5 @@
 LICENSE=LICENSE
-LICENSE_HEADER=LICENSE_HEADER
+LICENSE_HEADER?=LICENSE_HEADER
 VENV=.venv
 $(VENV):
 	$(MAKE) $(VENV)-update
@@ -29,8 +29,8 @@ LICENSE_HEADER:
 .PHONY: license
 license: LICENSE LICENSE_HEADER $(VENV)
 	. $(VENV)/bin/activate \
-		&& python -m licenseheaders -t LICENSE_HEADER -d opentutor_status/src $(args) \
-		&& python -m licenseheaders -t LICENSE_HEADER -d opentutor_status/tests $(args)
+		&& python -m licenseheaders -t ${LICENSE_HEADER} -d opentutor_status/src $(args) \
+		&& python -m licenseheaders -t ${LICENSE_HEADER} -d opentutor_status/tests $(args)
 
 .PHONY: test
 test:
